@@ -74,6 +74,14 @@
                         <button is="emby-button" type="button" class="raised btnPlay hide detailButton" data-mode="play">
                             <span>${ButtonPlay}</span>
                         </button>
+						
+						<!-- bb: Added buttons -->
+						<button is="emby-button" type="button" class="raised detailButton btnDlCustom" onclick="ExecuteItemDetailsPageDownload();">
+                            <span>${ButtonDownload}</span>
+                        </button>
+						<button is="emby-button" type="button" class="raised detailButton btnStreamExternalCustom" onclick="ExecuteItemDetailsPageExternalStream();">
+                            <span>Stream öffnen</span>
+                        </button>
 
                         <button is="emby-button" type="button" class="button-flat btnDownload hide detailButton-mobile">
                             <div class="detailButton-mobile-content">

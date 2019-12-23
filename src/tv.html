@@ -1,5 +1,13 @@
 <div id="tvRecommendedPage" data-dom-cache="true" data-role="page" class="page libraryPage backdropPage pageWithAbsoluteTabs withTabs" data-backdroptype="series">
 
+<!-- bb: Hide upcoming tab -->
+<style>
+button.emby-tab-button:nth-child(4)
+{
+	display: none !important;
+}
+</style>
+
     <div class="pageTabContent" id="seriesTab" data-index="0">
         <div class="flex align-items-center justify-content-center flex-wrap-wrap padded-top padded-left padded-right padded-bottom">
             <div class="paging"></div>

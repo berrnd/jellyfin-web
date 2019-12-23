@@ -1,15 +1,6 @@
-<h1 align="center">Jellyfin Web</h1>
-<h3 align="center">The Free Software Media System</h3>
+Jellyfin Web
+=========
 
----
+This is my personal fork of [Jeyllfin Web](https://github.com/jellyfin/jellyfin-web) with some customizations to perfectly fit my needs.
 
-<p align="center">
-<img alt="Logo Banner" src="https://raw.githubusercontent.com/jellyfin/jellyfin-ux/master/branding/SVG/banner-logo-solid.svg?sanitize=true"/>
-<br/><br/>
-<a href="https://github.com/jellyfin/jellyfin-web"><img alt="GPL 2.0 License" src="https://img.shields.io/github/license/jellyfin/jellyfin-web.svg"/></a>
-<a href="https://github.com/jellyfin/jellyfin-web/releases"><img alt="Current Release" src="https://img.shields.io/github/release/jellyfin/jellyfin-web.svg"/></a>
-</p>
-
----
-
-Jellyfin is a free software media system that puts you in control of managing and streaming your media.
+All my personal changes are prefixed by a (code) comment starting with `bb:`.

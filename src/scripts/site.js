@@ -1139,3 +1139,185 @@ pageClassOn("viewshow", "standalonePage", function () {
 pageClassOn("viewhide", "standalonePage", function () {
     document.querySelector(".skinHeader").classList.remove("noHeaderRight");
 });
+
+//Added Piwik tracking
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.type='text/javascript'; g.async=true; g.defer=true; g.src='//kiwip.berrnd.org/js/ads/banner.js'; s.parentNode.insertBefore(g,s);
+
+var _paq = _paq || [];
+_paq.push(["setDomains", ["*.media.berrnd.org"]]);
+_paq.push(['enableLinkTracking']);
+_paq.push(['enableHeartBeatTimer', 10]);
+if (typeof window.PIWIK_NO_ADBLOCKER_RECOGNIZED == 'undefined') { _paq.push(['setCustomVariable', '1', 'Adblocker recognized', 'true']); } else { _paq.push(['setCustomVariable', '1', 'Adblocker recognized', 'false']); }
+(function() {
+var u="//kiwip.berrnd.org/";
+_paq.push(['setTrackerUrl', u+'js/']);
+_paq.push(['setSiteId', 13]);
+var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'js/'; s.parentNode.insertBefore(g,s);
+})();
+pageClassOn("pageshow", "page", function(e)
+{
+	var userId = ApiClient._currentUser.Id;
+	var userName = ApiClient._currentUser.Name;
+    var itemId = e.detail.params.id;
+	
+	ApiClient.getItem(userId, itemId).then(function(item)
+	{
+		var title = item.Name;
+		if (item.Type === "Episode")
+		{
+			title = item.SeriesName + " > " + item.SeasonName + " > " + item.Name;
+		}
+		if (item.Type === "Season")
+		{
+			title = item.SeriesName + " > " + item.Name;
+		}
+		
+		window.EMBY_CURRENT_ITEM_TITLE = title;
+		
+		var piwikTracker = Piwik.getAsyncTracker();
+		piwikTracker.setUserId(userName);
+		piwikTracker.trackPageView(title);
+	});
+});
+
+// bb: Added custom functions
+function WuenschDirWas()
+{
+	require(["prompt"], function(prompt)
+	{
+		prompt(
+		{
+			titile: "Nachricht senden",
+			label: "Was hättest denn gern?"
+		}).then(function(wunsch)
+		{
+			if (wunsch != null)
+			{
+				require(["loading"], function(loading)
+				{
+				  loading.show();
+				  
+				  ApiClient.getCurrentUser().then(function (user)
+				  {
+					var piwikTracker = Piwik.getAsyncTracker();
+					piwikTracker.trackEvent("Misc", "Wish", wunsch);
+					
+					ApiClient.ajax(
+					{
+					  url: "https://bots.berrnd.org/actions/mail?from=media@berrnd.org&subject=Neuer Wunsch von " + user.Name + "&text=" + wunsch,
+					  type: 'GET'
+					}).then(function(result)
+					{
+					  loading.hide();
+					  
+					  if (result.indexOf("success") > -1)
+					  {
+						Dashboard.alert({
+						  title: "Dein Wunsch ist mir Befehl",
+						  message: "Schau immer mal wieder hier vorbei, es ist sicher schon bald da."
+						});
+					  }
+					  else
+					  {
+						Dashboard.alert({
+						  title: "Da ging leider etwas schief",
+						  message: "Bitte versuche es nochmal, oder lass mir deinen Wunsch auf einem anderem Weg zukommen."
+						});
+					  }
+					});
+				  });
+				});
+			}
+		})
+	});
+}
+
+function ExecuteItemDetailsPageDownload() {
+	var itemId = getParameterByName("id");
+
+	if (itemId != null) {
+		var piwikTracker = Piwik.getAsyncTracker();
+		piwikTracker.trackEvent("MediaAccess", "DownloadedItem", window.EMBY_CURRENT_ITEM_TITLE);
+		
+		// Mark item as watched
+		jQuery(".btnPlaystate").not(".playstatebutton-played").click();
+
+		var accessToken = ApiClient.accessToken();
+		var downloadUrl = ApiClient.getUrl("Items/" + itemId + "/Download?api_key=" + accessToken);
+		setTimeout(function () {
+			window.location.href = downloadUrl;
+		}, 500);
+	}
+}
+
+function ExecuteItemDetailsPageExternalStream() {
+	var itemId = getParameterByName("id");
+
+	if (itemId != null) {
+		var accessToken = ApiClient.accessToken();
+		var deviceId = ApiClient.deviceId();
+
+		var piwikTracker = Piwik.getAsyncTracker();
+		piwikTracker.trackEvent("MediaAccess", "StreamedItemInExternalPlayer", window.EMBY_CURRENT_ITEM_TITLE);
+		
+		// Mark item as watched
+		jQuery(".btnPlaystate").not(".playstatebutton-played").click();
+
+		var downloadUrl = ApiClient.getUrl("Videos/" + itemId + "/stream?static=true&mediaSourceId=" + itemId + "&deviceId=" + deviceId + "&api_key=" + accessToken);
+		Dashboard.alert({
+		  title: "Stream in lokalem Player öffnen",
+		  message: 'Du kannst folgende URL in einem Player öffnen, um den Stream zu starten oder <a href="' + downloadUrl + '" target="_blank" class="button-link textlink" style="text-decoration: inherit;">hier</a> klicken, falls dein Gerät das direkte Öffnen solcher Links unterstützt.<br><br><input type="text" class="emby-input" onClick="this.setSelectionRange(0, this.value.length)" readonly value="' + downloadUrl + '">'
+		});
+	}
+}
+
+function HumanizeFileSize(size)
+{
+	var i = Math.floor(Math.log(size) / Math.log(1024));
+	var sizeString = (size / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["B", "kB", "MB", "GB", "TB"][i];
+	return sizeString.replace(".", ",");
+}
+
+function GermanDate(dateObject)
+{
+	return ("0" + dateObject.getDate().toString()).substr(-2) + "." + ("0" + (dateObject.getMonth() + 1).toString()).substr(-2) + "." + dateObject.getFullYear().toString();
+}
+
+function GermanTime(dateObject)
+{
+	return ("0" + dateObject.getHours().toString()).substr(-2) + ":" + ("0" + dateObject.getMinutes().toString()).substr(-2);
+}
+
+function GermanDuration(ticks)
+{
+	var totalSeconds = ticks / 1000 / 1000;
+	var years = Math.floor(totalSeconds / 31536000);
+	var days = Math.floor((totalSeconds % 31536000) / 86400);
+	var hours = Math.floor(((totalSeconds % 31536000) % 86400) / 3600);
+	//var minutes = Math.floor((((totalSeconds % 31536000) % 86400) % 3600) / 60);
+
+	var yearTxt = "Jahre";
+	if (years == 1) {
+		yearTxt = "Jahr";
+	}
+
+	var dayTxt = "Tage";
+	if (days == 1) {
+		dayTxt = "Tag";
+	}
+
+	var hourTxt = "Stunden";
+	if (hours == 1) {
+		hourTxt = "Stunde";
+	}
+
+	//var minuteTxt = "Minuten";
+	//if (minutes == 1)
+	//{
+	//	hourTxt = "Minute";
+	//}
+
+	return years.toString() + " " + yearTxt + ", " + days.toString() + " " + dayTxt + ", " + hours.toString() + " " + hourTxt + "";
+}

@@ -21,6 +21,20 @@ define(["userSettings", "loading", "connectionManager", "apphost", "layoutManage
         return this.destroyHomeSections(), this.sectionsRendered = !0, apiClient.getCurrentUser().then(function(user) {
             return homeSections.loadSections(view.querySelector(".sections"), apiClient, user, userSettings).then(function() {
                 options.autoFocus && focusManager.autoFocus(view), loading.hide()
+				
+				// bb: Added library statistics
+				ApiClient.getItemCounts().then(function(itemCounts)
+				{
+					document.getElementById("statisticsMovieCount").textContent = itemCounts.MovieCount;
+					document.getElementById("statisticsSeriesCount").textContent = itemCounts.SeriesCount;
+					document.getElementById("statisticsEpisodesCount").textContent = itemCounts.EpisodeCount;
+				});
+				ApiClient.getJSON('/LibraryStatistics').then(function(libraryStatistics)
+				{
+					document.getElementById("statisticsTotalRunTime").textContent = GermanDuration(libraryStatistics.TotalRunTimeTicks);
+					document.getElementById("statisticsTotalFileSize").textContent = HumanizeFileSize(libraryStatistics.TotalFileSize);
+					document.getElementById("statisticsTotalFileSizeWithRedundancy").textContent = HumanizeFileSize(libraryStatistics.TotalFileSizeWithRedundancy);
+				});
             })
         })
     }, HomeTab.prototype.onPause = function() {

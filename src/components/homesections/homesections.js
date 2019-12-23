@@ -1,20 +1,21 @@
 define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'layoutManager', 'imageLoader', 'globalize', 'itemShortcuts', 'itemHelper', 'appRouter', 'scripts/imagehelper','paper-icon-button-light', 'emby-itemscontainer', 'emby-scroller', 'emby-button', 'css!./homesections'], function (connectionManager, cardBuilder, appSettings, dom, appHost, layoutManager, imageLoader, globalize, itemShortcuts, itemHelper, appRouter, imageHelper) {
     'use strict';
 
+	// bb: Changed default sections
     function getDefaultSection(index) {
         switch (index) {
             case 0:
-                return 'smalllibrarytiles';
-            case 1:
-                return 'resume';
-            case 2:
-                return 'resumeaudio';
-            case 3:
-                return 'livetv';
-            case 4:
-                return 'nextup';
-            case 5:
                 return 'latestmedia';
+            case 1:
+                return 'smalllibrarytiles';
+            case 2:
+                return 'none';
+            case 3:
+                return 'none';
+            case 4:
+                return 'none';
+            case 5:
+                return 'none';
             case 6:
                 return 'none';
             default:
@@ -25,7 +26,11 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
     function getAllSectionsToShow(userSettings, sectionCount) {
         var sections = [];
         for (var i = 0, length = sectionCount; i < length; i++) {
-            var section = userSettings.get('homesection' + i) || getDefaultSection(i);
+			
+			// bb: Always use default sections only
+            //var section = userSettings.get('homesection' + i) || getDefaultSection(i);
+			var section = getDefaultSection(i)
+			
             if (section === 'folders') {
                 section = getDefaultSection(0);
             }
@@ -318,7 +323,8 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
     function loadLibraryTiles(elem, apiClient, user, userSettings, shape, userViews, allSections) {
         var html = '';
         if (userViews.length) {
-            html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + globalize.translate('HeaderMyMedia') + '</h2>';
+			// bb: Changed "Meine Medien" to "Alle Medien"
+            html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + globalize.translate('Alle Medien') + '</h2>';
             if (enableScrollX()) {
                 html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-mousewheel="false" data-centerfocus="true">';
                 html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x">';

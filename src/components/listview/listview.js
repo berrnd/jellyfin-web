@@ -286,6 +286,9 @@ define(['itemHelper', 'mediaInfo', 'indicators', 'connectionManager', 'layoutMan
                 }
 
                 var imageAction = playOnImageClick ? 'resume' : action;
+				
+				// bb: Don't resume, always link
+				imageAction = 'link';
 
                 if (imgUrl) {
                     html += '<div data-action="' + imageAction + '" class="' + imageClass + ' lazy" data-src="' + imgUrl + '" item-icon>';
@@ -301,7 +304,10 @@ define(['itemHelper', 'mediaInfo', 'indicators', 'connectionManager', 'layoutMan
                 }
 
                 if (playOnImageClick) {
-                    html += '<button is="paper-icon-button-light" class="listItemImageButton itemAction" data-action="resume"><i class="md-icon listItemImageButton-icon">&#xE037;</i></button>';
+					
+					// bb: Changed title to "Zur Episode"
+                    //html += '<button is="paper-icon-button-light" class="listItemImageButton itemAction" data-action="resume"><i class="md-icon listItemImageButton-icon">&#xE037;</i></button>';
+					html += '<button is="paper-icon-button-light" class="listItemImageButton itemAction" data-action="link">&rarr; Zur Episode</button>';
                 }
 
                 var progressHtml = indicators.getProgressBarHtml(item, {

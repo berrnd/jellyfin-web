@@ -236,10 +236,14 @@ define(['browser', 'appStorage', 'apphost', 'loading', 'connectionManager', 'glo
                 id: 'markunplayed'
             });
 
-            menuItems.push({
-                name: globalize.translate('RefreshMetadata'),
-                id: 'refresh'
-            });
+			// bb: Only allow refresh metadata when user also have "Policy.EnableContentDeletion" permission
+			if (user.Policy.EnableContentDeletion)
+			{
+				menuItems.push({
+					name: globalize.translate('RefreshMetadata'),
+					id: 'refresh'
+				});
+			}
 
 
 

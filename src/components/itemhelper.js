@@ -237,7 +237,9 @@ define(['apphost', 'globalize'], function (appHost, globalize) {
         },
 
         enableDateAddedDisplay: function (item) {
-            return !item.IsFolder && item.MediaType && item.Type !== 'Program' && item.Type !== 'TvChannel' && item.Type !== 'Trailer';
+			// Always disable this
+			return false;
+            //return !item.IsFolder && item.MediaType && item.Type !== 'Program' && item.Type !== 'TvChannel' && item.Type !== 'Trailer';
         },
 
         canMarkPlayed: function (item) {

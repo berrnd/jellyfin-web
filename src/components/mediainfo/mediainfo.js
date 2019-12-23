@@ -290,6 +290,12 @@ define(['datetime', 'globalize', 'appRouter', 'itemHelper', 'indicators', 'mater
                 }
             }
         }
+		
+		// bb: Include file size
+		if (item.Size)
+		{
+			miscInfo.push(HumanizeFileSize(item.Size));
+		}
 
         if (item.RunTimeTicks && item.Type !== "Series" && item.Type !== 'Program' && !showFolderRuntime && options.runtime !== false) {
 

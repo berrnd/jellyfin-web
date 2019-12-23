@@ -155,6 +155,10 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
 
     function search(instance, apiClient, context, value) {
 
+		// bb: Added search tracking
+		var piwikTracker = Piwik.getAsyncTracker();
+		piwikTracker.trackSiteSearch(value);
+		
         if (value || layoutManager.tv) {
             instance.mode = 'search';
             context.querySelector('.searchSuggestions').classList.add('hide');

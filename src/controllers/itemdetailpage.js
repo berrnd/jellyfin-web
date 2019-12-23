@@ -364,6 +364,19 @@ define(["loading", "appRouter", "layoutManager", "userSettings", "connectionMana
             hideAll(page, "mainDetailButtons");
         }
         showRecordingFields(instance, page, item, user);
+		
+		// bb: Added download and stream in external player button
+		if (item.CanDownload)
+		{
+			$('.btnDlCustom', page).removeClass('hide');
+			$('.btnStreamExternalCustom', page).removeClass('hide');
+		}
+		else
+		{
+			$('.btnDlCustom', page).addClass('hide');
+			$('.btnStreamExternalCustom', page).addClass('hide');
+		}
+		
         var groupedVersions = (item.MediaSources || []).filter(function(g) {
             return "Grouping" == g.Type
         });
@@ -452,7 +465,9 @@ define(["loading", "appRouter", "layoutManager", "userSettings", "connectionMana
         if (item.UserData && item.UserData.LastPlayedDate) {
             lastPlayedElement.classList.remove("hide");
             var datePlayed = datetime.parseISO8601Date(item.UserData.LastPlayedDate);
-            lastPlayedElement.innerHTML = globalize.translate("DatePlayed") + " " + datetime.toLocaleDateString(datePlayed) + " " + datetime.getDisplayTime(datePlayed);
+			// bb: Changed how last played is displayed
+            //lastPlayedElement.innerHTML = globalize.translate("DatePlayed") + " " + datetime.toLocaleDateString(datePlayed) + " " + datetime.getDisplayTime(datePlayed);
+			lastPlayedElement.innerHTML = "<span style='font-size: 90%; font-style: italic;'>Du hast dies zuletzt am " + datetime.toLocaleDateString(datePlayed) + " um " + datetime.getDisplayTime(datePlayed) + " abgespielt oder heruntergeladen</span>";
         } else {
             lastPlayedElement.classList.add("hide");
         }
@@ -1222,6 +1237,10 @@ define(["loading", "appRouter", "layoutManager", "userSettings", "connectionMana
             }
 
             function onPlayClick() {
+				// bb: Added piwik tracking
+				var piwikTracker = Piwik.getAsyncTracker();
+				piwikTracker.trackEvent("MediaAccess", "StartedDirectStream", currentItem.Name);
+				
                 playCurrentItem(this, this.getAttribute("data-mode"))
             }
 
@@ -1259,6 +1278,10 @@ define(["loading", "appRouter", "layoutManager", "userSettings", "connectionMana
             }
 
             function onPlayTrailerClick() {
+				// bb: Added piwik tracking
+				var piwikTracker = Piwik.getAsyncTracker();
+				piwikTracker.trackEvent("MediaAccess", "PlayedTrailer", window.EMBY_CURRENT_ITEM_TITLE);
+				
                 playTrailer(view)
             }
 

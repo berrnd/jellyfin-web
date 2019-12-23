@@ -1,7 +1,49 @@
 <div id="indexPage" style="outline: none;" data-role="page" data-dom-cache="true" class="page homePage libraryPage allLibraryPage backdropPage pageWithAbsoluteTabs withTabs" data-backdroptype="movie,series,book">
 
     <div class="tabContent pageTabContent" id="homeTab" data-index="0">
+		<!-- bb: Added statistics overview -->
+        <div class="homePageSection verticalSection padded-bottom" style="padding-left: 16px">
+          <h2 class="listHeader" style="padding-left: 2.6vw; margin-bottom: -15px;">Statistik</h2>
+          <div style="padding-left: 2.6vw;">
+			<h2>
+				<span id="statisticsMovieCount" style="color: #00a4dc;">...</span> Filme, <span id="statisticsSeriesCount" style="color: #00a4dc;">...</span> Serien mit insgesamt <span id="statisticsEpisodesCount" style="color: #00a4dc;">...</span> Episoden, <span id="statisticsTotalFileSize" style="color: #00a4dc;">...</span> Daten (<span id="statisticsTotalFileSizeWithRedundancy" style="color: #00a4dc;">...</span> inkl. Redundanz), <span id="statisticsTotalRunTime" style="color: #00a4dc;">...</span> Spieldauer
+			</h2>
+          </div>
+        </div>
+		
         <div class="sections"></div>
+		
+		<!-- bb: Added streaming info -->
+        <div class="homePageSection verticalSection" style="padding-left: 16px">
+		  <h2 class="listHeader" style="padding-left: 2.6vw; margin-bottom: -15px;">Direkt streamen</h2>
+		  <div style="padding-left: 2.6vw;">
+			<h3>
+				Es gibt mehrere Möglichkeiten:
+				<ul>
+					<li>Direkte Wiedergabe im Browser (klappt mit Firefox oder Chrome und den meisten Medien <span style="font-style: italic;">&rarr; Button "Abspielen")</span></li>
+					<li>Download als Datei und lokale Wiedergabe <span style="font-style: italic;">&rarr; Button "Download"</span></li>
+					<li>Stream in einem externen Player <span style="font-style: italic;">&rarr; Button "Stream öffnen"</span></li>
+				</ul>
+				Oder noch mehr integrierte Möglichkeiten:<br>
+				<ul>
+					<li>Nutze das Mediencenter <a class="button-link textlink" style="text-decoration: inherit;" href="https://kodi.tv/" target="_blank">Kodi</a> mit dem <a class="button-link textlink" style="text-decoration: inherit;" href="https://jellyfin.org/docs/general/clients/installing-kodi.html" target="_blank">AddOn "Jellyfin for Kodi"</a></li>
+					<li>Nutze die Android App <a class="button-link textlink" style="text-decoration: inherit;" href="https://play.google.com/store/apps/details?id=org.jellyfin.mobile" target="_blank">Jellyfin</a></li>
+				</ul>
+			</h3>
+		  </div>
+		</div>
+        </script>
+		
+		<!-- bb: Added wish button -->
+        <div class="homePageSection verticalSection" style="padding-left: 16px">
+		  <h2 class="listHeader" style="padding-left: 2.6vw; margin-bottom: -15px;">Wunschfee</h2>
+		  <div style="padding-left: 2.6vw;">
+			<h3>Eine Serie ist unvollständig, du hättest gerne was Neues oder irgendwas geht nicht?</h3>
+		  </div>
+		  <div style="display:flex;flex-wrap:wrap;padding-left: 2.6vw;">
+			<button style="background: #00a4dc;" is="emby-button" type="button" class="raised subdued emby-button emby-button-noflex" onclick="WuenschDirWas();"><i class="md-icon">add_shopping_cart</i><span>Ich wünsch mir was</span></button>
+		  </div>
+		</div>
     </div>
     <div class="tabContent pageTabContent" id="favoritesTab" data-index="1">
         <div class="sections"></div>

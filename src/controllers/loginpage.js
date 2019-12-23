@@ -159,7 +159,8 @@ define(["apphost", "appSettings", "dom", "connectionManager", "loading", "cardSt
             });
 
             apiClient.getJSON(apiClient.getUrl("Branding/Configuration")).then(function(options) {
-                view.querySelector(".disclaimer").textContent = options.LoginDisclaimer || "";
+				// bb: Allow HTML in disclaimer (innerHTML instead of innerTxt)
+                view.querySelector(".disclaimer").innerHTML = options.LoginDisclaimer || "";
             });
         });
     }
