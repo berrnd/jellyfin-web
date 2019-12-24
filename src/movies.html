@@ -1,5 +1,13 @@
 <div id="moviesPage" data-role="page" data-dom-cache="true" class="page libraryPage backdropPage collectionEditorPage pageWithAbsoluteTabs withTabs" data-backdroptype="movie">
 
+<!-- bb: Hide trailers tab -->
+<style>
+button.emby-tab-button:nth-child(3)
+{
+	display: none !important;
+}
+</style>
+
     <div class="pageTabContent" data-index="0">
         <div class="flex align-items-center justify-content-center flex-wrap-wrap padded-top padded-left padded-right padded-bottom">
             <div class="paging"></div>
