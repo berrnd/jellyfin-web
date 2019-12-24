@@ -256,7 +256,9 @@ define(["loading", "appRouter", "layoutManager", "userSettings", "connectionMana
     }
 
     function enabled() {
-        return userSettings.enableBackdrops();
+		// bb: Always enable backdrops
+		return true;
+        //return userSettings.enableBackdrops();
     }
 
     function renderBackdrop(page, item, apiClient) {
