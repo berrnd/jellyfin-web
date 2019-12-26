@@ -22,7 +22,7 @@ define(["userSettings", "loading", "connectionManager", "apphost", "layoutManage
             return homeSections.loadSections(view.querySelector(".sections"), apiClient, user, userSettings).then(function() {
                 options.autoFocus && focusManager.autoFocus(view), loading.hide()
 				
-				// bb: Added library statistics
+				// bb: Added library statistics & Serien news
 				ApiClient.getItemCounts().then(function(itemCounts)
 				{
 					document.getElementById("statisticsMovieCount").textContent = itemCounts.MovieCount;
@@ -34,6 +34,10 @@ define(["userSettings", "loading", "connectionManager", "apphost", "layoutManage
 					document.getElementById("statisticsTotalRunTime").textContent = GermanDuration(libraryStatistics.TotalRunTimeTicks);
 					document.getElementById("statisticsTotalFileSize").textContent = HumanizeFileSize(libraryStatistics.TotalFileSize);
 					document.getElementById("statisticsTotalFileSizeWithRedundancy").textContent = HumanizeFileSize(libraryStatistics.TotalFileSizeWithRedundancy);
+				});
+				ApiClient.getJSON('/CustomHomesections').then(function(customHomesections)
+				{
+					document.getElementById("customSerienNews").innerHTML = customHomesections.Sections[0];
 				});
             })
         })
