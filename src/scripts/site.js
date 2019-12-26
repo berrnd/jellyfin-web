@@ -1140,7 +1140,7 @@ pageClassOn("viewhide", "standalonePage", function () {
     document.querySelector(".skinHeader").classList.remove("noHeaderRight");
 });
 
-//Added Piwik tracking
+//Added tracking
 var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
 g.type='text/javascript'; g.async=true; g.defer=true; g.src='//kiwip.berrnd.org/js/ads/banner.js'; s.parentNode.insertBefore(g,s);
 
