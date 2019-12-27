@@ -325,7 +325,8 @@ define(["playbackManager", "dom", "inputmanager", "datetime", "itemHelper", "med
             var documentTitle = parentName || (item ? item.Name : null);
 
             if (documentTitle) {
-                document.title = documentTitle;
+				// bb: Custom title handling is done in site.js
+                //document.title = documentTitle;
             }
         }
 

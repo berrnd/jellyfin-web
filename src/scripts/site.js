@@ -498,7 +498,8 @@ var AppInfo = {};
             }
         }
 
-        document.title = Globalize.translateDocument(document.title, "core");
+		// bb: Custom title handling is done in site.js
+        //document.title = Globalize.translateDocument(document.title, "core");
 
         if (browser.tv && !browser.android) {
             console.log("Using system fonts with explicit sizes");
@@ -1140,14 +1141,14 @@ pageClassOn("viewhide", "standalonePage", function () {
     document.querySelector(".skinHeader").classList.remove("noHeaderRight");
 });
 
-//Added tracking
+// bb: Added tracking & custom title handling
 var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
 g.type='text/javascript'; g.async=true; g.defer=true; g.src='//kiwip.berrnd.org/js/ads/banner.js'; s.parentNode.insertBefore(g,s);
-
 var _paq = _paq || [];
 _paq.push(["setDomains", ["*.media.berrnd.org"]]);
 _paq.push(['enableLinkTracking']);
 _paq.push(['enableHeartBeatTimer', 10]);
+_paq.push(['trackPageView']);
 if (typeof window.PIWIK_NO_ADBLOCKER_RECOGNIZED == 'undefined') { _paq.push(['setCustomVariable', '1', 'Adblocker recognized', 'true']); } else { _paq.push(['setCustomVariable', '1', 'Adblocker recognized', 'false']); }
 (function() {
 var u="//kiwip.berrnd.org/";
@@ -1162,6 +1163,13 @@ pageClassOn("pageshow", "page", function(e)
 	var userName = ApiClient._currentUser.Name;
     var itemId = e.detail.params.id;
 	
+	window.JELLYFIN_CURRENT_ITEM_TITLE = "";
+	if (itemId == null)
+	{
+		bb_SetTitle();
+		return;
+	}
+	
 	ApiClient.getItem(userId, itemId).then(function(item)
 	{
 		var title = item.Name;
@@ -1174,13 +1182,34 @@ pageClassOn("pageshow", "page", function(e)
 			title = item.SeriesName + " > " + item.Name;
 		}
 		
-		window.EMBY_CURRENT_ITEM_TITLE = title;
+		window.JELLYFIN_CURRENT_ITEM_TITLE = title;
+		bb_SetTitle();
 		
 		var piwikTracker = Piwik.getAsyncTracker();
 		piwikTracker.setUserId(userName);
 		piwikTracker.trackPageView(title);
 	});
 });
+
+// bb: Customize title handling
+window.JELLYFIN_CURRENT_ITEM_TITLE = null;
+document.title = "Bernds Mediahaufen";
+function bb_SetTitle()
+{
+	if (window.JELLYFIN_CURRENT_ITEM_TITLE == null || window.JELLYFIN_CURRENT_ITEM_TITLE == "")
+	{
+		document.title = "Bernds Mediahaufen";
+	}
+	else
+	{
+		document.title = window.JELLYFIN_CURRENT_ITEM_TITLE + " | Bernds Mediahaufen";
+	}
+}
+new MutationObserver(function(mutations)
+{
+	bb_SetTitle();
+}).observe(
+	document.querySelector("title"), { subtree: true, characterData: true });
 
 // bb: Added custom functions
 function WuenschDirWas()
@@ -1239,7 +1268,7 @@ function ExecuteItemDetailsPageDownload() {
 
 	if (itemId != null) {
 		var piwikTracker = Piwik.getAsyncTracker();
-		piwikTracker.trackEvent("MediaAccess", "DownloadedItem", window.EMBY_CURRENT_ITEM_TITLE);
+		piwikTracker.trackEvent("MediaAccess", "DownloadedItem", window.JELLYFIN_CURRENT_ITEM_TITLE);
 		
 		// Mark item as watched
 		jQuery(".btnPlaystate").not(".playstatebutton-played").click();
@@ -1260,7 +1289,7 @@ function ExecuteItemDetailsPageExternalStream() {
 		var deviceId = ApiClient.deviceId();
 
 		var piwikTracker = Piwik.getAsyncTracker();
-		piwikTracker.trackEvent("MediaAccess", "StreamedItemInExternalPlayer", window.EMBY_CURRENT_ITEM_TITLE);
+		piwikTracker.trackEvent("MediaAccess", "StreamedItemInExternalPlayer", window.JELLYFIN_CURRENT_ITEM_TITLE);
 		
 		// Mark item as watched
 		jQuery(".btnPlaystate").not(".playstatebutton-played").click();

@@ -1282,7 +1282,7 @@ define(["loading", "appRouter", "layoutManager", "userSettings", "connectionMana
             function onPlayTrailerClick() {
 				// bb: Added piwik tracking
 				var piwikTracker = Piwik.getAsyncTracker();
-				piwikTracker.trackEvent("MediaAccess", "PlayedTrailer", window.EMBY_CURRENT_ITEM_TITLE);
+				piwikTracker.trackEvent("MediaAccess", "PlayedTrailer", window.JELLYFIN_CURRENT_ITEM_TITLE);
 				
                 playTrailer(view)
             }

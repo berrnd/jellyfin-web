@@ -777,7 +777,8 @@ define(["dom", "layoutManager", "inputManager", "connectionManager", "events", "
                 pageTitleElement.innerHTML = "";
             }
 
-            document.title = "Jellyfin";
+			// bb: Custom title handling is done in site.js
+            //document.title = "Jellyfin";
         },
         setTitle: function (title) {
             if (null == title) {
@@ -801,7 +802,8 @@ define(["dom", "layoutManager", "inputManager", "connectionManager", "events", "
                 pageTitleElement.innerHTML = html || "";
             }
 
-            document.title = title || "Jellyfin";
+			// bb: Custom title handling is done in site.js
+            //document.title = title || "Jellyfin";
         },
         setTransparentMenu: function (transparent) {
             if (transparent) {
