@@ -30,13 +30,17 @@
                 </button>
 
                 <!-- bb: Added buttons -->
-                <button is="emby-button" type="button" class="raised detailButton btnDlCustom"
-                    onclick="ExecuteItemDetailsPageDownload();">
-                    <span>${ButtonDownload}</span>
+				<button is="emby-button" type="button" class="button-flat btnDlCustom hide detailButton" onclick="ExecuteItemDetailsPageDownload();">
+                    <div class="detailButton-content">
+                        <i class="material-icons detailButton-icon get_app"></i>
+                        <div class="detailButton-text">${ButtonDownload}</div>
+                    </div>
                 </button>
-                <button is="emby-button" type="button" class="raised detailButton btnStreamExternalCustom"
-                    onclick="ExecuteItemDetailsPageExternalStream();">
-                    <span>Stream öffnen</span>
+				<button is="emby-button" type="button" class="button-flat btnStreamExternalCustom hide detailButton" onclick="ExecuteItemDetailsPageExternalStream();">
+                    <div class="detailButton-content">
+                        <i class="material-icons detailButton-icon play_arrow"></i>
+                        <div class="detailButton-text">Sream öffnen</div>
+                    </div>
                 </button>
 
                 <button is="emby-button" type="button" class="button-flat btnDownload hide detailButton-mobile">

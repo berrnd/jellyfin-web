@@ -445,12 +445,11 @@ define(["loading", "appRouter", "layoutManager", "connectionManager", "userSetti
     }
 
     function renderBackdrop(item) {
-        // bb: Always enable backdrops
-        //if (dom.getWindowSize().innerWidth >= 1000) {
+        if (dom.getWindowSize().innerWidth >= 1000) {
             backdrop.setBackdrops([item]);
-        //} else {
-        //    backdrop.clear();
-        //}
+        } else {
+            backdrop.clear();
+        }
     }
 
     function renderDetailPageBackdrop(page, item, apiClient) {
