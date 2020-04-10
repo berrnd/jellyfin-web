@@ -82,7 +82,7 @@ define(['browser', 'layoutManager', 'dom', 'focusManager', 'ResizeObserver', 'sc
             intervactive: null, // Selector for special interactive elements.
 
             // Mixed options
-            speed: 0, // Animations speed in milliseconds. 0 to disable animations.
+            speed: 0 // Animations speed in milliseconds. 0 to disable animations.
 
         }, options);
 
@@ -93,17 +93,14 @@ define(['browser', 'layoutManager', 'dom', 'focusManager', 'ResizeObserver', 'sc
         // in cases with firefox, if the smooth scroll api is supported then use that because their implementation is very good
         if (options.allowNativeScroll === false) {
             options.enableNativeScroll = false;
-        }
-        else if (isSmoothScrollSupported && ((browser.firefox && !layoutManager.tv) || options.allowNativeSmoothScroll)) {
+        } else if (isSmoothScrollSupported && ((browser.firefox && !layoutManager.tv) || options.allowNativeSmoothScroll)) {
             // native smooth scroll
             options.enableNativeScroll = true;
-        }
-        else if (options.requireAnimation && (browser.animate || browser.supportsCssAnimation())) {
+        } else if (options.requireAnimation && (browser.animate || browser.supportsCssAnimation())) {
 
             // transform is the only way to guarantee animation
             options.enableNativeScroll = false;
-        }
-        else if (!layoutManager.tv || !browser.animate) {
+        } else if (!layoutManager.tv || !browser.animate) {
 
             options.enableNativeScroll = true;
         }
@@ -211,7 +208,9 @@ define(['browser', 'layoutManager', 'dom', 'focusManager', 'ResizeObserver', 'sc
             self.frameResizeObserver.observe(frame);
         }
 
-        self.reload = function () { load(); };
+        self.reload = function () {
+            load();
+        };
 
         self.getScrollEventName = function () {
             return transform ? 'scrollanimate' : 'scroll';
@@ -227,7 +226,6 @@ define(['browser', 'layoutManager', 'dom', 'focusManager', 'ResizeObserver', 'sc
 
         function nativeScrollTo(container, pos, immediate) {
 
-
             if (container.scroll) {
                 if (o.horizontal) {
 
@@ -242,8 +240,7 @@ define(['browser', 'layoutManager', 'dom', 'focusManager', 'ResizeObserver', 'sc
                         behavior: immediate ? 'instant' : 'smooth'
                     });
                 }
-            }
-            else if (!immediate && container.scrollTo) {
+            } else if (!immediate && container.scrollTo) {
                 if (o.horizontal) {
                     container.scrollTo(Math.round(pos), 0);
                 } else {
@@ -395,7 +392,7 @@ define(['browser', 'layoutManager', 'dom', 'focusManager', 'ResizeObserver', 'sc
             var currentStart = self._pos.cur;
             var currentEnd = currentStart + frameSize;
 
-            //console.log('offset:' + offset + ' currentStart:' + currentStart + ' currentEnd:' + currentEnd);
+            console.debug('offset:' + offset + ' currentStart:' + currentStart + ' currentEnd:' + currentEnd);
             var isVisible = offset >= currentStart && (offset + size) <= currentEnd;
 
             return {
@@ -577,8 +574,9 @@ define(['browser', 'layoutManager', 'dom', 'focusManager', 'ResizeObserver', 'sc
 		 * @return {Int}
 		 */
         function normalizeWheelDelta(event) {
-            // wheelDelta needed only for IE8-
-            scrolling.curDelta = ((o.horizontal ? event.deltaY || event.deltaX : event.deltaY) || -event.wheelDelta);
+            // JELLYFIN MOD: Only use deltaX for horizontal scroll and remove IE8 support
+            scrolling.curDelta = o.horizontal ? event.deltaX : event.deltaY;
+            // END JELLYFIN MOD
 
             if (transform) {
                 scrolling.curDelta /= event.deltaMode === 1 ? 3 : 100;
