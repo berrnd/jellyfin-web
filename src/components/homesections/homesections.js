@@ -218,7 +218,9 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
     function getFetchLatestItemsFn(serverId, parentId, collectionType) {
         return function () {
             var apiClient = connectionManager.getApiClient(serverId);
-            var limit = 16;
+
+            // bb: Increased limit to 30
+            var limit = 30;
 
             if (enableScrollX()) {
                 if (collectionType === 'music') {
@@ -227,8 +229,8 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             } else {
                 if (collectionType === 'tvshows')
                 {
-                    // bb: Increased limit to 16
-                    limit = 16;
+                    // bb: Increased limit to 100
+                    limit = 100;
                 } else if (collectionType === 'music') {
                     limit = 9;
                 } else {
