@@ -1360,6 +1360,3 @@ function GermanDuration(ticks)
 
     return years.toString() + " " + yearTxt + ", " + days.toString() + " " + dayTxt + ", " + hours.toString() + " " + hourTxt + "";
 }
-
-// bb: Custom dashboard version
-window.dashboardVersion = "20200815-1";

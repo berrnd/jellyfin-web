@@ -225,8 +225,10 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
                     limit = 30;
                 }
             } else {
-                if (collectionType === 'tvshows') {
-                    limit = 5;
+                if (collectionType === 'tvshows')
+                {
+                    // bb: Increased limit to 16
+                    limit = 16;
                 } else if (collectionType === 'music') {
                     limit = 9;
                 } else {

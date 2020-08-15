@@ -293,9 +293,9 @@ define(['itemHelper', 'mediaInfo', 'indicators', 'connectionManager', 'layoutMan
 
                 if (playOnImageClick)
                 {
-                    // bb: Changed title to "Zur Episode"
+                    // bb: Changed title to "Zur Episode" & data-action to "link"
                     //html += '<button is="paper-icon-button-light" class="listItemImageButton itemAction" data-action="resume"><span class="material-icons listItemImageButton-icon play_arrow"></span></button>';
-                    html += '<button is="paper-icon-button-light" class="listItemImageButton itemAction" data-action="resume"><span class="material-icons listItemImageButton-icon play_arrow"></span>&rarr; Zur Episode</button>';
+                    html += '<button is="paper-icon-button-light" class="listItemImageButton itemAction" data-action="link"><span class="material-icons listItemImageButton-icon play_arrow"></span>&rarr; Zur Episode</button>';
                 }
 
                 var progressHtml = indicators.getProgressBarHtml(item, {

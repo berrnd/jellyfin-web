@@ -1,3 +1,3 @@
 rem bb: Added my build script
 yarn install
-yarn run build
+yarn run build:production

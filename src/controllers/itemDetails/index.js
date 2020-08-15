@@ -1043,7 +1043,7 @@ define(['loading', 'appRouter', 'layoutManager', 'connectionManager', 'userSetti
         {
             lastPlayedElement.classList.remove("hide");
             var datePlayed = datetime.parseISO8601Date(item.UserData.LastPlayedDate);
-            lastPlayedElement.innerHTML = "<span style='font-size: 90%; font-style: italic;'>Du hast dies zuletzt am " + datetime.toLocaleDateString(datePlayed) + " um " + datetime.getDisplayTime(datePlayed) + " abgespielt oder heruntergeladen</span>";
+            lastPlayedElement.innerHTML = "<p style='font-size: 90%; font-style: italic;'>Du hast dies zuletzt am " + datetime.toLocaleDateString(datePlayed) + " um " + datetime.getDisplayTime(datePlayed) + " abgespielt oder heruntergeladen</p>";
         } else
         {
             lastPlayedElement.classList.add("hide");
