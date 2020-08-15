@@ -2,62 +2,16 @@ trigger:
   batch: true
   branches:
     include:
-    - master
-    - release-*
+    - '*'
   tags:
+    include:
+    - '*'
+pr:
+  branches:
     include:
     - '*'
 
 jobs:
-  - job: main_build
-    displayName: 'Main Build'
-
-    dependsOn: lint
-    condition: succeeded()
-
-    pool:
-      vmImage: 'ubuntu-latest'
-
-    steps:
-    - task: NodeTool@0
-      displayName: 'Install Node'
-      inputs:
-        versionSpec: '10.x'
-
-    - script: 'yarn install'
-      displayName: 'Install Dependencies'
-
-    - script: 'test -d dist'
-      displayName: 'Check Build'
-
-    - script: 'yarn pack --filename jellyfin-web.tgz'
-      displayName: 'Bundle Release'
-
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publish Release'
-      condition: succeeded()
-      inputs:
-        targetPath: '$(Build.SourcesDirectory)/jellyfin-web.tgz'
-        artifactName: 'jellyfin-web'
-
-  - job: lint
-    displayName: 'Lint'
-
-    pool:
-      vmImage: 'ubuntu-latest'
-
-    steps:
-    - task: NodeTool@0
-      displayName: 'Install Node'
-      inputs:
-        versionSpec: '10.x'
-
-    - script: 'yarn install'
-      displayName: 'Install Dependencies'
-
-    - script: 'yarn run lint'
-      displayName: 'Run ESLint'
-
-    - script: |
-        yarn run stylelint
-      displayName: 'Run stylelint'
+- template: azure-pipelines-build.yml
+- template: azure-pipelines-lint.yml
+- template: azure-pipelines-package.yml

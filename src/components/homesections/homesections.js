@@ -2,8 +2,10 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
     'use strict';
 
     // bb: Changed default sections
-    function getDefaultSection(index) {
-        switch (index) {
+    function getDefaultSection(index)
+    {
+        switch (index)
+        {
             case 0:
                 return 'latestmedia';
             case 1:
@@ -25,10 +27,10 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
 
     function getAllSectionsToShow(userSettings, sectionCount) {
         var sections = [];
-        for (var i = 0, length = sectionCount; i < length; i++) {
-
+        for (var i = 0, length = sectionCount; i < length; i++)
+        {
             // bb: Always use default sections only
-            //var section = userSettings.get('homesection' + i) || getDefaultSection(i);
+            var section = userSettings.get('homesection' + i) || getDefaultSection(i);
             var section = getDefaultSection(i)
 
             if (section === 'folders') {
@@ -69,21 +71,21 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             } else {
                 var noLibDescription;
                 if (user['Policy'] && user['Policy']['IsAdministrator']) {
-                    noLibDescription = Globalize.translate("NoCreatedLibraries", '<a id="button-createLibrary" class="button-link">', '</a>')
+                    noLibDescription = globalize.translate('NoCreatedLibraries', '<br><a id="button-createLibrary" class="button-link">', '</a>');
                 } else {
-                    noLibDescription = Globalize.translate("AskAdminToCreateLibrary");
+                    noLibDescription = globalize.translate('AskAdminToCreateLibrary');
                 }
 
                 html += '<div class="centerMessage padded-left padded-right">';
-                html += '<h2>' + Globalize.translate("MessageNothingHere") + '</h2>';
-                html += '<p>' + noLibDescription + '</p>'
+                html += '<h2>' + globalize.translate('MessageNothingHere') + '</h2>';
+                html += '<p>' + noLibDescription + '</p>';
                 html += '</div>';
                 elem.innerHTML = html;
 
-                var createNowLink = elem.querySelector("#button-createLibrary")
+                var createNowLink = elem.querySelector('#button-createLibrary');
                 if (createNowLink) {
-                    createNowLink.addEventListener("click", function () {
-                        Dashboard.navigate("library.html");
+                    createNowLink.addEventListener('click', function () {
+                        Dashboard.navigate('library.html');
                     });
                 }
             }
@@ -136,7 +138,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
         } else if (section === 'librarytiles' || section === 'smalllibrarytiles' || section === 'smalllibrarytiles-automobile' || section === 'librarytiles-automobile') {
             loadLibraryTiles(elem, apiClient, user, userSettings, 'smallBackdrop', userViews, allSections);
         } else if (section === 'librarybuttons') {
-            loadlibraryButtons(elem, apiClient, user, userSettings, userViews, allSections);
+            loadlibraryButtons(elem, apiClient, user, userSettings, userViews);
         } else if (section === 'resume') {
             loadResumeVideo(elem, apiClient, userId);
         } else if (section === 'resumeaudio') {
@@ -173,11 +175,11 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
     }
 
     function getPortraitShape() {
-        return enableScrollX() ? 'autooverflow' : 'auto';
+        return enableScrollX() ? 'overflowPortrait' : 'portrait';
     }
 
     function getLibraryButtonsHtml(items) {
-        var html = "";
+        var html = '';
 
         html += '<div class="verticalSection verticalSection-extrabottompadding">';
         html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + globalize.translate('HeaderMyMedia') + '</h2>';
@@ -188,7 +190,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
         for (var i = 0, length = items.length; i < length; i++) {
             var item = items[i];
             var icon = imageHelper.getLibraryIcon(item.CollectionType);
-            html += '<a is="emby-linkbutton" href="' + appRouter.getRouteUrl(item) + '" class="raised homeLibraryButton"><i class="material-icons homeLibraryIcon ' + icon + '"></i><span class="homeLibraryText">' + item.Name + '</span></a>';
+            html += '<a is="emby-linkbutton" href="' + appRouter.getRouteUrl(item) + '" class="raised homeLibraryButton"><span class="material-icons homeLibraryIcon ' + icon + '"></span><span class="homeLibraryText">' + item.Name + '</span></a>';
         }
 
         html += '</div>';
@@ -234,9 +236,9 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
 
             var options = {
                 Limit: limit,
-                Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+                Fields: 'PrimaryImageAspectRatio,BasicSyncInfo,Path',
                 ImageTypeLimit: 1,
-                EnableImageTypes: "Primary,Backdrop,Thumb",
+                EnableImageTypes: 'Primary,Backdrop,Thumb',
                 ParentId: parentId
             };
 
@@ -248,9 +250,9 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
         return function (items) {
             var cardLayout = false;
             var shape;
-            if (itemType === 'Channel' || viewType === 'movies' || viewType === 'books') {
+            if (itemType === 'Channel' || viewType === 'movies' || viewType === 'books' || viewType === 'tvshows') {
                 shape = getPortraitShape();
-            } else if (viewType === 'music') {
+            } else if (viewType === 'music' || viewType === 'homevideos') {
                 shape = getSquareShape();
             } else {
                 shape = getThumbShape();
@@ -259,7 +261,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             return cardBuilder.getCardsHtml({
                 items: items,
                 shape: shape,
-                preferThumb: viewType !== 'movies' && itemType !== 'Channel' && viewType !== 'music' ? 'auto' : null,
+                preferThumb: viewType !== 'movies' && viewType !== 'tvshows' && itemType !== 'Channel' && viewType !== 'music' ? 'auto' : null,
                 showUnplayedIndicator: false,
                 showChildCountIndicator: true,
                 context: 'home',
@@ -287,7 +289,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             html += '<h2 class="sectionTitle sectionTitle-cards">';
             html += globalize.translate('LatestFromLibrary', parent.Name);
             html += '</h2>';
-            html += '<i class="material-icons chevron_right"></i>';
+            html += '<span class="material-icons chevron_right"></span>';
             html += '</a>';
         } else {
             html += '<h2 class="sectionTitle sectionTitle-cards">' + globalize.translate('LatestFromLibrary', parent.Name) + '</h2>';
@@ -345,9 +347,11 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
 
     function loadLibraryTiles(elem, apiClient, user, userSettings, shape, userViews, allSections) {
         var html = '';
-        if (userViews.length) {
+        if (userViews.length)
+        {
             // bb: Changed "Meine Medien" to "Alle Medien"
-            html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + globalize.translate('Alle Medien') + '</h2>';
+            //html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + globalize.translate('HeaderMyMedia') + '</h2>';
+            html += '<h2 class="sectionTitle sectionTitle-cards padded-left">' + 'Alle Medien' + '</h2>';
             if (enableScrollX()) {
                 html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-centerfocus="true">';
                 html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x">';
@@ -392,9 +396,9 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             var options = {
                 Limit: limit,
                 Recursive: true,
-                Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+                Fields: 'PrimaryImageAspectRatio,BasicSyncInfo',
                 ImageTypeLimit: 1,
-                EnableImageTypes: "Primary,Backdrop,Thumb",
+                EnableImageTypes: 'Primary,Backdrop,Thumb',
                 EnableTotalRecordCount: false,
                 MediaTypes: 'Video'
             };
@@ -465,9 +469,9 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             var options = {
                 Limit: limit,
                 Recursive: true,
-                Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+                Fields: 'PrimaryImageAspectRatio,BasicSyncInfo',
                 ImageTypeLimit: 1,
-                EnableImageTypes: "Primary,Backdrop,Thumb",
+                EnableImageTypes: 'Primary,Backdrop,Thumb',
                 EnableTotalRecordCount: false,
                 MediaTypes: 'Audio'
             };
@@ -530,9 +534,9 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
                 IsAiring: true,
                 limit: 24,
                 ImageTypeLimit: 1,
-                EnableImageTypes: "Primary,Thumb,Backdrop",
+                EnableImageTypes: 'Primary,Thumb,Backdrop',
                 EnableTotalRecordCount: false,
-                Fields: "ChannelInfo,PrimaryImageAspectRatio"
+                Fields: 'ChannelInfo,PrimaryImageAspectRatio'
             });
         };
     }
@@ -571,9 +575,9 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             IsAiring: true,
             limit: 1,
             ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Thumb,Backdrop",
+            EnableImageTypes: 'Primary,Thumb,Backdrop',
             EnableTotalRecordCount: false,
-            Fields: "ChannelInfo,PrimaryImageAspectRatio"
+            Fields: 'ChannelInfo,PrimaryImageAspectRatio'
         }).then(function (result) {
             var html = '';
             if (result.Items.length) {
@@ -636,7 +640,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
                     html += '<h2 class="sectionTitle sectionTitle-cards">';
                     html += globalize.translate('HeaderOnNow');
                     html += '</h2>';
-                    html += '<i class="material-icons chevron_right"></i>';
+                    html += '<span class="material-icons chevron_right"></span>';
                     html += '</a>';
 
                 } else {
@@ -646,7 +650,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
 
                 if (enableScrollX()) {
                     html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-centerfocus="true">';
-                    html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x">'
+                    html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x">';
                 } else {
                     html += '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap focuscontainer-x">';
                 }
@@ -673,10 +677,10 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             var apiClient = connectionManager.getApiClient(serverId);
             return apiClient.getNextUpEpisodes({
                 Limit: enableScrollX() ? 24 : 15,
-                Fields: "PrimaryImageAspectRatio,SeriesInfo,DateCreated,BasicSyncInfo",
+                Fields: 'PrimaryImageAspectRatio,SeriesInfo,DateCreated,BasicSyncInfo,Path',
                 UserId: apiClient.getCurrentUserId(),
                 ImageTypeLimit: 1,
-                EnableImageTypes: "Primary,Backdrop,Banner,Thumb",
+                EnableImageTypes: 'Primary,Backdrop,Banner,Thumb',
                 EnableTotalRecordCount: false
             });
         };
@@ -711,7 +715,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             html += '<h2 class="sectionTitle sectionTitle-cards">';
             html += globalize.translate('HeaderNextUp');
             html += '</h2>';
-            html += '<i class="material-icons chevron_right"></i>';
+            html += '<span class="material-icons chevron_right"></span>';
             html += '</a>';
         } else {
             html += '<h2 class="sectionTitle sectionTitle-cards">' + globalize.translate('HeaderNextUp') + '</h2>';
@@ -720,7 +724,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
 
         if (enableScrollX()) {
             html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-centerfocus="true">';
-            html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x" data-monitor="videoplayback,markplayed">'
+            html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x" data-monitor="videoplayback,markplayed">';
         } else {
             html += '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap focuscontainer-x" data-monitor="videoplayback,markplayed">';
         }
@@ -745,7 +749,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
             return apiClient.getLiveTvRecordings({
                 userId: apiClient.getCurrentUserId(),
                 Limit: enableScrollX() ? 12 : 5,
-                Fields: "PrimaryImageAspectRatio,BasicSyncInfo",
+                Fields: 'PrimaryImageAspectRatio,BasicSyncInfo',
                 EnableTotalRecordCount: false,
                 IsLibraryItem: activeRecordingsOnly ? null : false,
                 IsInProgress: activeRecordingsOnly ? true : null
@@ -792,7 +796,7 @@ define(['connectionManager', 'cardBuilder', 'appSettings', 'dom', 'apphost', 'la
 
         if (enableScrollX()) {
             html += '<div is="emby-scroller" class="padded-top-focusscale padded-bottom-focusscale" data-centerfocus="true">';
-            html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x">'
+            html += '<div is="emby-itemscontainer" class="itemsContainer scrollSlider focuscontainer-x">';
         } else {
             html += '<div is="emby-itemscontainer" class="itemsContainer padded-left padded-right vertical-wrap focuscontainer-x">';
         }

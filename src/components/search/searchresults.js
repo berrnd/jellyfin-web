@@ -5,8 +5,8 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
 
         var options = {
 
-            SortBy: "IsFavoriteOrLiked,Random",
-            IncludeItemTypes: "Movie,Series,MusicArtist",
+            SortBy: 'IsFavoriteOrLiked,Random',
+            IncludeItemTypes: 'Movie,Series,MusicArtist',
             Limit: 20,
             Recursive: true,
             ImageTypeLimit: 0,
@@ -148,10 +148,10 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
 
     function search(instance, apiClient, context, value) {
 
-		// bb: Added search tracking
-		var piwikTracker = Piwik.getAsyncTracker();
-		piwikTracker.trackSiteSearch(value);
-		
+        // bb: Added search tracking
+        var piwikTracker = Piwik.getAsyncTracker();
+        piwikTracker.trackSiteSearch(value);
+
         if (value || layoutManager.tv) {
             instance.mode = 'search';
             context.querySelector('.searchSuggestions').classList.add('hide');
@@ -169,7 +169,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
                 IncludeGenres: false,
                 IncludeStudios: false,
                 IncludeArtists: false,
-                IncludeItemTypes: "LiveTvProgram",
+                IncludeItemTypes: 'LiveTvProgram',
                 IsMovie: true,
                 IsKids: false,
                 IsNews: false
@@ -198,7 +198,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
                 IncludeGenres: false,
                 IncludeStudios: false,
                 IncludeArtists: false,
-                IncludeItemTypes: "Movie"
+                IncludeItemTypes: 'Movie'
 
             }, context, '.movieResults', {
 
@@ -216,7 +216,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "Series"
+            IncludeItemTypes: 'Series'
 
         }, context, '.seriesResults', {
 
@@ -235,7 +235,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
                 IncludeGenres: false,
                 IncludeStudios: false,
                 IncludeArtists: false,
-                IncludeItemTypes: "LiveTvProgram",
+                IncludeItemTypes: 'LiveTvProgram',
                 IsSeries: true,
                 IsSports: false,
                 IsKids: false,
@@ -266,7 +266,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
                 IncludeGenres: false,
                 IncludeStudios: false,
                 IncludeArtists: false,
-                IncludeItemTypes: "Episode"
+                IncludeItemTypes: 'Episode'
 
             }, context, '.episodeResults', {
 
@@ -367,7 +367,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "LiveTvProgram",
+            IncludeItemTypes: 'LiveTvProgram',
             IsMovie: instance.options.collectionType === 'livetv' ? false : null,
             IsSeries: instance.options.collectionType === 'livetv' ? false : null,
             IsSports: instance.options.collectionType === 'livetv' ? false : null,
@@ -398,8 +398,8 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            MediaTypes: "Video",
-            ExcludeItemTypes: "Movie,Episode"
+            MediaTypes: 'Video',
+            ExcludeItemTypes: 'Movie,Episode'
 
         }, context, '.videoResults', {
 
@@ -443,7 +443,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "MusicAlbum"
+            IncludeItemTypes: 'MusicAlbum'
 
         }, context, '.albumResults', {
 
@@ -460,7 +460,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "Audio"
+            IncludeItemTypes: 'Audio'
 
         }, context, '.songResults', {
 
@@ -468,7 +468,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             showTitle: true,
             overlayText: false,
             centerText: true,
-            action: 'play'
+            overlayPlayButton: true
 
         });
 
@@ -479,7 +479,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            MediaTypes: "Photo"
+            MediaTypes: 'Photo'
 
         }, context, '.photoResults', {
 
@@ -496,7 +496,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "PhotoAlbum"
+            IncludeItemTypes: 'PhotoAlbum'
 
         }, context, '.photoAlbumResults', {
 
@@ -512,7 +512,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "Book"
+            IncludeItemTypes: 'Book'
 
         }, context, '.bookResults', {
 
@@ -529,7 +529,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "AudioBook"
+            IncludeItemTypes: 'AudioBook'
 
         }, context, '.audioBookResults', {
 
@@ -545,7 +545,7 @@ define(['layoutManager', 'globalize', 'require', 'events', 'connectionManager', 
             IncludeGenres: false,
             IncludeStudios: false,
             IncludeArtists: false,
-            IncludeItemTypes: "Playlist"
+            IncludeItemTypes: 'Playlist'
 
         }, context, '.playlistResults', {
 
